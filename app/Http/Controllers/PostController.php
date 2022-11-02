@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Storage;
 class PostController extends Controller
 {
     public function index(){
-        $content =Postingan::latest()->paginate(6);
+        $content =Postingan::latest()->paginate(2 );
         return view ('postingan.index',compact('content'));
     }
     public function create()
@@ -20,19 +20,25 @@ class PostController extends Controller
     {
         //validate form
         $this->validate($buat, [
-            'image'     => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'image'     => 'required|image|mimes:jpeg,png,jpg|max:2048',//max 2mb
             'title'     => 'required|min:5',
             'content'   => 'required|min:10'
         ]);
+        $message=[
+            'image.required'=>'type jpg,jpeg,png and max 2 mb.',
+            'title.required'=>'judul kurang dari 5 huruf atau kosong.',
+            'content.required'=>'conten kosong.',
+        ];
+        
 
         //upload image
         $image = $buat->file('image');
-        $image->storeAs('public/post', $image->hashName());
+        $image->storeAs('public/images', $image->hashName());
 
        Postingan::create([
             'image'     => $image->hashName(),
-            'title'     => $buat->title,
-            'content'   => $buat->content
+            'title'     => $buat->input('title'),
+            'content'   => $buat->input('content'),
         ]);
         echo $buat->id_post;
 //a
@@ -81,5 +87,10 @@ class PostController extends Controller
     public function show(){
         $artikel =Postingan::latest()->paginate(6);
         return view ('postingan.show',compact('artikel'));
+    }
+    public function search(Request $cari){
+        $keyword=$cari->search;
+        $content= Postingan::where('title','like','%' . $keyword . '%')->paginate(5);
+        return view ('postingan.index',compact('content'))->with('i',(request()->input('page',1)-1)*5);
     }
 }

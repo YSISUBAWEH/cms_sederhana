@@ -3,26 +3,20 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Dashboard;
+use DB;
 
 class HomeController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Contracts\Support\Renderable
-     */
     public function index()
     {
-        return view('home');
+        $data= DB::table('post')
+        ->get();
+        return view('tampilan.index',compact(['data']));
+    }
+     public function show($id)
+    {
+        $data = Dashboard::find($id);
+        return view('tampilan.show',compact(['data']));
     }
 }

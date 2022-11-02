@@ -16,7 +16,11 @@
             <div class="col-md-12">
                 <div class="card border-0 shadow rounded">
                     <div class="card-body">
-                        <a href='/postingan/create' class="btn btn-md btn-success mb-3"><i class="fa-solid fa-plus" aria-hidden="true"></i></a>
+                        <a href='/postingan/create' class="btn btn-md btn-success mb-3"><i class="fa-solid fa-plus" aria-hidden="true"></i></a><div style="float: right;">
+                        <form method="get" action="/postingan/search">
+                            <input type="text" name="search" class="form-control">
+                            <button type="submit" class="btn btn-primary">cari</button>                                
+                        </form></div>
                         <table class="table table-bordered">
                             <thead>
                               <tr>
@@ -32,7 +36,7 @@
                                 <tr>
                                     <td>{{ $isi->id_post}}</td>
                                     <td class="text-center">
-                                        <img src="{{ Storage::url('public/post/').$isi->image }}" class="rounded-0" style="width: 150px">
+                                        <img src="{{ Storage::url('public/images/').$isi->image }}" class="rounded-0" style="width: 360px">
                                     </td>
                                     <td>{{ $isi->title }}</td>
                                     <td>{!! $isi->content !!}</td>
@@ -49,8 +53,12 @@
                                   </div>
                               @endforelse
                             </tbody>
-                          </table>  
+                          </table>
+                          @if ($content->hasPages())
+                          <div class="card-footer-primary">  
                           {{ $content->links() }}
+                      </div>
+                      @endif
                     </div>
                 </div>
             </div>

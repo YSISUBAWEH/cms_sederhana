@@ -14,9 +14,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('home', ['title' => 'Home']);
-})->name('home');
+Route::get('/', [App\Http\Controllers\HomeController::class,'index']);
+Route::get('/tampilan/show/{id}', [App\Http\Controllers\HomeController::class,'show']);
 
 
 Route::get('/postingan', [App\Http\Controllers\PostController::class,'index']);
@@ -26,6 +25,7 @@ Route::get('/postingan/edit/{id}', [App\Http\Controllers\PostController::class,'
 Route::put('/postingan/update/{id}', [App\Http\Controllers\PostController::class,'update']);
 Route::get('/postingan/delete/{id}', [App\Http\Controllers\PostController::class,'delete']);
 Route::get('/postingan/show', [App\Http\Controllers\PostController::class,'show']);
+Route::get('/postingan/search', [App\Http\Controllers\PostController::class,'search']);
 
 Route::get('register', [UserController::class, 'register'])->name('register');
 Route::post('register', [UserController::class, 'register_action'])->name('register.action');
@@ -34,4 +34,3 @@ Route::post('login', [UserController::class, 'login_action'])->name('login.actio
 Route::get('password', [UserController::class, 'password'])->name('password');
 Route::post('password', [UserController::class, 'password_action'])->name('password.action');
 Route::get('logout', [UserController::class, 'logout'])->name('logout');
-Route::get('show', [PostController::class, 'show'])->name('show');
